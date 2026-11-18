@@ -45,12 +45,10 @@
       fetch("./app.py").then(r => r.text()),
       fetch("./evaluation.py").then(r => r.text()),
       fetch("./config/location_params.csv").then(r => r.text()),
-      fetch("./config/table4_ranges.csv").then(r => r.text()),
       fetch("./config/baseline_params.csv").then(r => r.text()),
       fetch("./alpha_range_data/alpha_ranges_full_anchors.json").then(r => r.text()),
-      fetch("./alpha_range_data/alpha_ranges.json").then(r => r.text()),
-      fetch("./alpha_range_data/alpha_ranges.csv").then(r => r.text()),
-    ]).then(([appPy, evalPy, locationCsv, table4Csv, baselineCsv, alphaFullJson, alphaJson, alphaCsv]) => {
+      fetch("./README.md").then(r => r.ok ? r.text() : ""),
+    ]).then(([appPy, evalPy, locationCsv, baselineCsv, alphaFullJson, readmeMd]) => {
       mount(
         {
           requirements: ["pandas", "matplotlib"],
@@ -59,11 +57,9 @@
             "app.py": appPy,
             "evaluation.py": evalPy,
             "config/location_params.csv": locationCsv,
-            "config/table4_ranges.csv": table4Csv,
             "config/baseline_params.csv": baselineCsv,
             "alpha_range_data/alpha_ranges_full_anchors.json": alphaFullJson,
-            "alpha_range_data/alpha_ranges.json": alphaJson,
-            "alpha_range_data/alpha_ranges.csv": alphaCsv,
+            "README.md": readmeMd,
           },
           streamlitConfig: {
             "client.toolbarMode": "viewer",
