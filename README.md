@@ -19,14 +19,11 @@ The dashboard presents a single-page side-by-side comparison across three column
 
 ## Terminology
 
-### IT Equipment Energy
-This is location-agnostic: it reflects only the compute energy of the model itself, not the surrounding datacenter infrastructure.
+**IT Equipment Energy** This is location-agnostic: it reflects only the compute energy of the model itself, not the surrounding datacenter infrastructure.
 
-### Data Center Electricity
-The IT energy is scaled by PUE (Power Usage Effectiveness) to account for datacenter overhead (cooling systems, power distribution losses, lighting, etc.)
+**Data Center Electricity** The IT energy is scaled by PUE (Power Usage Effectiveness) to account for datacenter overhead (cooling systems, power distribution losses, lighting, etc.)
 
-### Cooling Water
-Data center electricity is multiplied by WUE (Water Usage Effectiveness) to estimate direct on-site water evaporated for cooling. 
+**Cooling Water** Data center electricity is multiplied by WUE (Water Usage Effectiveness) to estimate direct on-site water evaporated for cooling. 
 
 ## Reference
 [1] N. Jegham, M. Abdelatti, C. Y. Koh, L. Elmoubarki, and A. Hendawi, “How Hungry is AI? Benchmarking Energy, Water, and Carbon Footprint of LLM Inference,” Nov. 24, 2025, arXiv: arXiv:2505.09598. doi: 10.48550/arXiv.2505.09598.
