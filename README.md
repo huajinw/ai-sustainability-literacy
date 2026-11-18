@@ -1,10 +1,6 @@
 # LLM Footprint Comparator Dashboard
 
-A Streamlit dashboard for estimating and comparing the environmental footprint
-(energy, electricity, and cooling water) of LLM inference workloads against a
-plain Google Search baseline.
-
-This verion is simplified from a more comprehensive dashboard (https://cmu-lib.github.io/ai-sustainability/), and is used for teaching about environment impact of LLMs. The related teaching materials can be found in our [Lesson Plan](https://sites.google.com/pitt.edu/ai-sustainability), "The Environmental Cost of a “Better” Answer". 
+A Streamlit dashboard for estimating and comparing the environmental footprint (energy, electricity, and cooling water) of LLM inference workloads against a plain Google Search baseline. This version is specifically developed for teaching about environment impact of LLMs, adapted from [a more comprehensive dashboard](https://cmu-lib.github.io/ai-sustainability/). The related teaching materials can be found in our [Lesson Plan](https://sites.google.com/pitt.edu/ai-sustainability), "The Environmental Cost of a “Better” Answer". 
 
 ## Dashboard Overview
 
