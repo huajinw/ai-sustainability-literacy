@@ -1,4 +1,5 @@
 import csv as csv_module
+import os
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -6,7 +7,6 @@ import matplotlib.pyplot as plt
 from evaluation import (
     estimate_footprint_interval,
     words_to_tokens,
-    TOKENS_PER_WORD,
     LOCATION_PARAMS,
     Interval,
     ALPHA_TABLE,
@@ -34,8 +34,7 @@ st.set_page_config(page_title="LLM Footprint Comparator", layout="wide")
 st.title("🌍 LLM Footprint Comparator")
 st.caption(
     f"Google baseline: {GOOGLE_LABEL} = {GOOGLE_WH_PER_QUERY} Wh/query "
-    f"({GOOGLE_SOURCE}, {GOOGLE_YEAR})  ·  "
-    f"Word-to-token conversion: 1 word ≈ {TOKENS_PER_WORD:.2f} tokens"
+    f"({GOOGLE_SOURCE}, {GOOGLE_YEAR})"
 )
 
 models    = sorted(ALPHA_TABLE.keys())
@@ -54,15 +53,13 @@ def interval_from_wh(wh: Interval, location: str):
     return elec, water
 
 def compute_from_words(model: str, anchor: str, location: str, in_words: int, out_words: int):
-    in_tok = words_to_tokens(in_words)
-    out_tok = words_to_tokens(out_words)
-    result = estimate_footprint_interval(
+    total_tokens = words_to_tokens(in_words) + words_to_tokens(out_words)
+    return estimate_footprint_interval(
         model=model,
         anchor=anchor,
-        total_tokens=in_tok + out_tok,
+        total_tokens=total_tokens,
         location=location,
     )
-    return result, in_tok, out_tok
 
 def kwh_to_wh(iv: Interval) -> Interval:
     return Interval(lo=iv.lo * 1000, mid=iv.mid * 1000, hi=iv.hi * 1000)
@@ -118,8 +115,7 @@ with colA:
     loc_a       = st.selectbox("Location",     locations, key="la")
     in_words_a  = st.number_input("Input Words",  0, 375000, 20,  key="ina")
     out_words_a = st.number_input("Output Words", 0, 375000, 640, key="outa")
-    rA, in_tok_a, out_tok_a = compute_from_words(model_a, anchor_a, loc_a, in_words_a, out_words_a)
-    st.caption(f"≈ {in_tok_a + out_tok_a:,} tokens ({in_tok_a:,} in + {out_tok_a:,} out)")
+    rA = compute_from_words(model_a, anchor_a, loc_a, in_words_a, out_words_a)
 
 with colB:
     st.subheader("Scenario B")
@@ -128,8 +124,7 @@ with colB:
     loc_b       = st.selectbox("Location",     locations, key="lb")
     in_words_b  = st.number_input("Input Words",  0, 375000, 75,  key="inb")
     out_words_b = st.number_input("Output Words", 0, 375000, 225, key="outb")
-    rB, in_tok_b, out_tok_b = compute_from_words(model_b, anchor_b, loc_b, in_words_b, out_words_b)
-    st.caption(f"≈ {in_tok_b + out_tok_b:,} tokens ({in_tok_b:,} in + {out_tok_b:,} out)")
+    rB = compute_from_words(model_b, anchor_b, loc_b, in_words_b, out_words_b)
 
 with colG:
     st.subheader(f"Baseline ({GOOGLE_LABEL})")
@@ -194,3 +189,15 @@ st.download_button(
     "footprint_comparison.csv",
     "text/csv",
 )
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ABOUT & HOW TO USE (from README.md)
+# ══════════════════════════════════════════════════════════════════════════════
+
+_README_PATH = os.path.join(os.path.dirname(__file__), "README.md")
+if os.path.exists(_README_PATH):
+    with open(_README_PATH, "r", encoding="utf-8") as f:
+        readme_text = f.read().strip()
+    if readme_text:
+        st.divider()
+        st.markdown(readme_text)
